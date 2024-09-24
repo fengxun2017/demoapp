@@ -39,11 +39,16 @@ void new_conn_cb(tinynet::TcpConnection &conn)
     LOG(DEBUG) << "demoapp: new conn " << conn.get_name() << std::endl;
 }
 
+void disconnected_cb(tinynet::TcpConnection &conn)
+{
+    LOG(DEBUG) << "demoapp: " << conn.get_name() << "disconnected" << std::endl;
+}
+
 void on_message_cb(tinynet::TcpConnection &conn, const uint8_t *data, size_t size)
 {
     std::ostringstream oss;
 
-    LOG(DEBUG) <<"demp app: " conn.get_name() << " recv data:" << display_data(data, size).str() << std::endl;
+    LOG(DEBUG) <<"demp app: " << conn.get_name() << " recv data:" << display_data(data, size).str() << std::endl;
 }
 
 int main(void)
@@ -52,6 +57,7 @@ int main(void)
     tinynet::TcpServer tcp_server(&event_loop, "127.0.0.1", 14000, "test_server");
     tcp_server.set_newconn_cb(new_conn_cb);
     tcp_server.set_onmessage_cb(on_message_cb);
+    tcp_server.set_disconnected_cb(disconnected_cb);
     tcp_server.start();
     event_loop.loop();
 
