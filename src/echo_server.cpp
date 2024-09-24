@@ -34,21 +34,22 @@ std::ostringstream display_data(const uint8_t *data, uint32_t len) {
     return oss;
 }
 
-void new_conn_cb(tinynet::TcpConnection &conn)
+void new_conn_cb(tinynet::TcpConnPtr &conn)
 {
-    LOG(DEBUG) << "demoapp: new conn " << conn.get_name() << std::endl;
+    LOG(DEBUG) << "demoapp: new conn " << conn->get_name() << std::endl;
 }
 
-void disconnected_cb(tinynet::TcpConnection &conn)
+void disconnected_cb(tinynet::TcpConnPtr &conn)
 {
-    LOG(DEBUG) << "demoapp: " << conn.get_name() << "disconnected" << std::endl;
+    LOG(DEBUG) << "demoapp: " << conn->get_name() << "disconnected" << std::endl;
 }
 
-void on_message_cb(tinynet::TcpConnection &conn, const uint8_t *data, size_t size)
+void on_message_cb(tinynet::TcpConnPtr &conn, const uint8_t *data, size_t size)
 {
     std::ostringstream oss;
+    LOG(DEBUG) <<"demp app: " << conn->get_name() << " recv data:" << display_data(data, size).str() << std::endl;
 
-    LOG(DEBUG) <<"demp app: " << conn.get_name() << " recv data:" << display_data(data, size).str() << std::endl;
+    conn->write_data(data, size);
 }
 
 int main(void)

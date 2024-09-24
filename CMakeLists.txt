@@ -10,7 +10,7 @@ set(CMAKE_CXX_FLAGS "-O2 -g -std=c++11")
 message(STATUS "in myapp show CMAKE_SOURCE_DIR: ${CMAKE_SOURCE_DIR}")
 message(STATUS "in myapp show CMAKE_CURRENT_BINARY_DIR: ${CMAKE_CURRENT_BINARY_DIR}")
 
-# 添加 loglib 和 netlib 子目录
+# 添加 tinylog 和 tinynet 子目录
 add_subdirectory(${CMAKE_SOURCE_DIR}/../tinylog ${CMAKE_CURRENT_BINARY_DIR}/tinylog)
 add_subdirectory(${CMAKE_SOURCE_DIR}/../tinynet ${CMAKE_CURRENT_BINARY_DIR}/tinynet)
 
