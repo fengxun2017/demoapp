@@ -36,18 +36,18 @@ std::ostringstream display_data(const uint8_t *data, uint32_t len) {
 
 void new_conn_cb(tinynet::TcpConnPtr &conn)
 {
-    LOG(DEBUG) << "demoapp: new conn " << conn->get_name() << std::endl;
+    LOG(DEBUG) << "echo_server: new conn " << conn->get_name() << std::endl;
 }
 
 void disconnected_cb(tinynet::TcpConnPtr &conn)
 {
-    LOG(DEBUG) << "demoapp: " << conn->get_name() << "disconnected" << std::endl;
+    LOG(DEBUG) << "echo_server: " << conn->get_name() << "disconnected" << std::endl;
 }
 
 void on_message_cb(tinynet::TcpConnPtr &conn, const uint8_t *data, size_t size)
 {
     std::ostringstream oss;
-    LOG(DEBUG) <<"demp app: " << conn->get_name() << " recv data:" << display_data(data, size).str() << std::endl;
+    LOG(DEBUG) <<"echo_server: " << conn->get_name() << " recv data:" << display_data(data, size).str() << std::endl;
 
     conn->write_data(data, size);
 }
@@ -55,7 +55,7 @@ void on_message_cb(tinynet::TcpConnPtr &conn, const uint8_t *data, size_t size)
 int main(void)
 {
     tinynet::EventLoop event_loop;
-    tinynet::TcpServer tcp_server(&event_loop, "127.0.0.1", 14000, "test_server");
+    tinynet::TcpServer tcp_server(&event_loop, "127.0.0.1", 14000, "echo_server");
     tcp_server.set_newconn_cb(new_conn_cb);
     tcp_server.set_onmessage_cb(on_message_cb);
     tcp_server.set_disconnected_cb(disconnected_cb);
