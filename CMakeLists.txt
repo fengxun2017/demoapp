@@ -5,7 +5,7 @@ message(STATUS "in myapp show PROJECT_SOURCE_DIR: ${PROJECT_SOURCE_DIR}")
 
 set(CMAKE_C_COMPILER gcc)
 set(CMAKE_CXX_COMPILER g++)
-set(CMAKE_CXX_FLAGS "-O2 -std=c++11")
+set(CMAKE_CXX_FLAGS "-O2 -g -std=c++11")
 
 message(STATUS "in myapp show CMAKE_SOURCE_DIR: ${CMAKE_SOURCE_DIR}")
 message(STATUS "in myapp show CMAKE_CURRENT_BINARY_DIR: ${CMAKE_CURRENT_BINARY_DIR}")

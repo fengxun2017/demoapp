@@ -7,5 +7,7 @@ int main(void)
     tinynet::EventLoop loop;
     tinynet::TcpServer tcp_server(&loop, "127.0.0.1", 14000, "test_server");
 
+    tcp_server.start();
+
     return 0;
 }
