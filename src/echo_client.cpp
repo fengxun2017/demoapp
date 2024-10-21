@@ -1,6 +1,7 @@
 #include <sstream>
 #include <iomanip> // 包含用于格式化输出的头文件
 #include <string>
+#include <thread>
 #include "logging.h"
 #include "tcp_client.h"
 #include "event_loop.h"
@@ -34,9 +35,12 @@ std::ostringstream display_data(const uint8_t *data, uint32_t len) {
     return oss;
 }
 
+tinynet::TcpConnPtr server_conn = nullptr;
 void new_conn_cb(tinynet::TcpConnPtr &conn)
 {
     LOG(DEBUG) << "echo_client: new conn " << conn->get_name() << std::endl;
+
+    server_conn = conn;
 }
 
 void disconnected_cb(tinynet::TcpConnPtr &conn)
@@ -48,8 +52,20 @@ void on_message_cb(tinynet::TcpConnPtr &conn, const uint8_t *data, size_t size)
 {
     std::ostringstream oss;
     LOG(DEBUG) <<"echo_client: " << conn->get_name() << " recv data:" << display_data(data, size).str() << std::endl;
+}
 
-    conn->write_data(data, size);
+void client_thread(void)
+{
+    uint8_t test_data[] = {1,2,3,4,5};
+
+    while (1)
+    {
+        if (nullptr != server_conn)
+        {
+            server_conn->write_data(test_data, sizeof(test_data));
+            std::this_thread::sleep_for(std::chrono::milliseconds(3000));
+        }
+    }
 }
 
 int main(void)
@@ -59,8 +75,11 @@ int main(void)
     tcp_client.set_newconn_cb(new_conn_cb);
     tcp_client.set_onmessage_cb(on_message_cb);
     tcp_client.set_disconnected_cb(disconnected_cb);
-    tcp_client.connect("127.0.0.1", 14000);\
-    
+    tcp_client.connect("127.0.0.1", 14000);
+
+
+    std::thread t1 = std::thread(client_thread);
+
     event_loop.loop();
 
     return 0;
