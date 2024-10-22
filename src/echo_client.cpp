@@ -58,13 +58,14 @@ void client_thread(void)
 {
     uint8_t test_data[] = {1,2,3,4,5};
 
+    LOG(DEBUG) << "start client_thread" << std::endl;
     while (1)
     {
         if (nullptr != server_conn)
         {
             server_conn->write_data(test_data, sizeof(test_data));
-            std::this_thread::sleep_for(std::chrono::milliseconds(3000));
         }
+        std::this_thread::sleep_for(std::chrono::milliseconds(3000));
     }
 }
 

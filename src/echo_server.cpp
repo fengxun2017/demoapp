@@ -21,16 +21,15 @@ void restore_default_format(std::ostringstream &oss, const DefaultFormatState& s
 std::ostringstream display_data(const uint8_t *data, uint32_t len) {
     std::ostringstream oss;
 
-    DefaultFormatState defaultState = save_default_format(oss);
+    // DefaultFormatState defaultState = save_default_format(oss);
 
     // 修改输出格式为十六进制
     for (uint32_t i = 0; i < len; ++i) {
         oss << std::hex << std::setw(2) << std::setfill('0') << static_cast<int>(data[i]) << " ";
     }
-    oss << std::endl;
 
     // 在函数退出时恢复默认的输出格式
-    restore_default_format(oss, defaultState);
+    // restore_default_format(oss, defaultState);
     return oss;
 }
 
@@ -41,7 +40,7 @@ void new_conn_cb(tinynet::TcpConnPtr &conn)
 
 void disconnected_cb(tinynet::TcpConnPtr &conn)
 {
-    LOG(DEBUG) << "echo_server: " << conn->get_name() << "disconnected" << std::endl;
+    LOG(DEBUG) << "echo_server: " << conn->get_name() << " disconnected" << std::endl;
 }
 
 void on_message_cb(tinynet::TcpConnPtr &conn, const uint8_t *data, size_t size)
