@@ -9,11 +9,11 @@ void on_request(const tinynet::HttpRequest &request, tinynet::HttpResponse &resp
     LOG(DEBUG) << "recv body:" << request.get_body() << std::endl;
     if (request.get_method() == tinynet::HttpRequest::GET)
     {
-        response.set_body("Hello, world! GET");
+        response.set_body("Hello, world! TEST GET");
     }
     else if(request.get_method() == tinynet::HttpRequest::POST)
     {
-        response.set_body("Hello, world! POST");
+        response.set_body("Hello, world! TEST POST");
     }
     else
     {
@@ -25,7 +25,7 @@ void on_request(const tinynet::HttpRequest &request, tinynet::HttpResponse &resp
 int main(void)
 {
     tinynet::EventLoop event_loop;
-    tinynet::HttpServer server(&event_loop, "192.168.56.103", 8070, "http_test_server");
+    tinynet::HttpServer server(&event_loop, "172.29.51.204", 8070, "http_test_server");
     server.set_onrequest_cb(on_request);
     server.start();
     event_loop.loop();
