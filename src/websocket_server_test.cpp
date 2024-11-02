@@ -1,6 +1,6 @@
 #include <sstream>
 #include <iomanip> // 包含用于格式化输出的头文件
-#include "websocket_server.h"
+#include "ws_server.h"
 #include "event_loop.h"
 #include "logging.h"
 
@@ -33,7 +33,7 @@ void on_message_cb(tinynet::TcpConnPtr &conn, const uint8_t *data, size_t size)
 int main(void)
 {
     tinynet::EventLoop event_loop;
-    tinynet::WebSocketServer server(&event_loop, "172.29.51.204", 8070, "websocket_server");
+    tinynet::WebSocketServer server(&event_loop, "192.168.56.103", 8070, "websocket_server");
     server.set_newconn_cb(new_conn_cb);
     server.set_onmessage_cb(on_message_cb);
     server.set_disconnected_cb(disconnected_cb);
