@@ -15,18 +15,18 @@ std::ostringstream display_data(const uint8_t *data, uint32_t len) {
 
 void new_conn_cb(tinynet::WsConnPtr &ws_conn)
 {
-    LOG(DEBUG) << "websocket_server: new conn " << ws_conn->get_name() << std::endl;
+    LOG(DEBUG) << "demo_websocket_server: new conn " << ws_conn->get_name() << std::endl;
 }
 
 void disconnected_cb(tinynet::WsConnPtr &ws_conn)
 {
-    LOG(DEBUG) << "websocket_server: " << ws_conn->get_name() << " disconnected" << std::endl;
+    LOG(DEBUG) << "demo_websocket_server: " << ws_conn->get_name() << " disconnected" << std::endl;
 }
 
 void on_message_cb(tinynet::WsConnPtr &ws_conn, const uint8_t *data, size_t size)
 {
     std::ostringstream oss;
-    LOG(DEBUG) <<"websocket_server: " << ws_conn->get_name() << " recv data:" << display_data(data, size).str() << std::endl;
+    LOG(DEBUG) <<"demo_websocket_server: " << ws_conn->get_name() << " recv data:" << display_data(data, size).str() << std::endl;
 
     ws_conn->write_data(data, size);
 }
@@ -34,7 +34,7 @@ void on_message_cb(tinynet::WsConnPtr &ws_conn, const uint8_t *data, size_t size
 int main(void)
 {
     tinynet::EventLoop event_loop;
-    tinynet::WebSocketServer server(&event_loop, "192.168.56.103", 8070, "websocket_server");
+    tinynet::WebSocketServer server(&event_loop, "172.29.51.204", 8070, "websocket_server");
     server.set_newconn_cb(new_conn_cb);
     server.set_onmessage_cb(on_message_cb);
     server.set_disconnected_cb(disconnected_cb);
