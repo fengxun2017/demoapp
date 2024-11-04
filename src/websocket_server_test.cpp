@@ -1,6 +1,7 @@
 #include <sstream>
 #include <iomanip> // 包含用于格式化输出的头文件
 #include "ws_server.h"
+#include "ws_connection.h"
 #include "event_loop.h"
 #include "logging.h"
 
@@ -12,22 +13,22 @@ std::ostringstream display_data(const uint8_t *data, uint32_t len) {
     return oss;
 }
 
-void new_conn_cb(tinynet::TcpConnPtr &conn)
+void new_conn_cb(tinynet::WsConnPtr &ws_conn)
 {
-    LOG(DEBUG) << "echo_server: new conn " << conn->get_name() << std::endl;
+    LOG(DEBUG) << "websocket_server: new conn " << ws_conn->get_name() << std::endl;
 }
 
-void disconnected_cb(tinynet::TcpConnPtr &conn)
+void disconnected_cb(tinynet::WsConnPtr &ws_conn)
 {
-    LOG(DEBUG) << "echo_server: " << conn->get_name() << " disconnected" << std::endl;
+    LOG(DEBUG) << "websocket_server: " << ws_conn->get_name() << " disconnected" << std::endl;
 }
 
-void on_message_cb(tinynet::TcpConnPtr &conn, const uint8_t *data, size_t size)
+void on_message_cb(tinynet::WsConnPtr &ws_conn, const uint8_t *data, size_t size)
 {
     std::ostringstream oss;
-    LOG(DEBUG) <<"echo_server: " << conn->get_name() << " recv data:" << display_data(data, size).str() << std::endl;
+    LOG(DEBUG) <<"websocket_server: " << ws_conn->get_name() << " recv data:" << display_data(data, size).str() << std::endl;
 
-    conn->write_data(data, size);
+    ws_conn->write_data(data, size);
 }
 
 int main(void)
