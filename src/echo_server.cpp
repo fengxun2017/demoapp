@@ -51,6 +51,7 @@ void on_message_cb(tinynet::TcpConnPtr &conn, const uint8_t *data, size_t size)
     conn->write_data(data, size);
 }
 
+
 int main(void)
 {
     tinynet::EventLoop event_loop;
@@ -59,6 +60,13 @@ int main(void)
     tcp_server.set_onmessage_cb(on_message_cb);
     tcp_server.set_disconnected_cb(disconnected_cb);
     tcp_server.start();
+
+    tinynet::TcpServer tcp_server2(&event_loop, "127.0.0.1", 14001, "echo_server2");
+    tcp_server2.set_newconn_cb(new_conn_cb);
+    tcp_server2.set_onmessage_cb(on_message_cb);
+    tcp_server2.set_disconnected_cb(disconnected_cb);
+    tcp_server2.start();
+
     event_loop.loop();
 
     return 0;

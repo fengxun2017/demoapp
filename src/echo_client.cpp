@@ -69,6 +69,81 @@ void client_thread(void)
     }
 }
 
+
+tinynet::TcpConnPtr client2_server_conn = nullptr;
+void new_conn_cb2(tinynet::TcpConnPtr &conn)
+{
+    LOG(DEBUG) << "echo_client2: new conn " << conn->get_name() << std::endl;
+
+    client2_server_conn = conn;
+}
+
+void disconnected_cb2(tinynet::TcpConnPtr &conn)
+{
+    LOG(DEBUG) << "echo_client2: " << conn->get_name() << "disconnected" << std::endl;
+}
+
+void on_message_cb2(tinynet::TcpConnPtr &conn, const uint8_t *data, size_t size)
+{
+    std::ostringstream oss;
+    LOG(DEBUG) <<"echo_client2: " << conn->get_name() << " recv data:" << display_data(data, size).str() << std::endl;
+}
+
+void client2_thread(void)
+{
+    uint8_t test_data[] = {6,7,8,9,0};
+
+    LOG(DEBUG) << "start client2_thread" << std::endl;
+    while (1)
+    {
+        if (nullptr != client2_server_conn)
+        {
+            client2_server_conn->write_data(test_data, sizeof(test_data));
+        }
+        std::this_thread::sleep_for(std::chrono::milliseconds(3000));
+    }
+}
+
+
+tinynet::TcpConnPtr client3_server_conn = nullptr;
+void new_conn_cb3(tinynet::TcpConnPtr &conn)
+{
+    LOG(DEBUG) << "echo_client3: new conn " << conn->get_name() << std::endl;
+
+    client3_server_conn = conn;
+}
+
+void disconnected_cb3(tinynet::TcpConnPtr &conn)
+{
+    LOG(DEBUG) << "echo_client3: " << conn->get_name() << "disconnected" << std::endl;
+}
+
+void on_message_cb3(tinynet::TcpConnPtr &conn, const uint8_t *data, size_t size)
+{
+    std::ostringstream oss;
+    LOG(DEBUG) <<"echo_client3: " << conn->get_name() << " recv data:" << display_data(data, size).str() << std::endl;
+}
+
+void client3_thread(void)
+{
+    uint8_t test_data[] = {11,12,13,14,15};
+
+    LOG(DEBUG) << "start client3_thread" << std::endl;
+    while (1)
+    {
+        if (nullptr != client3_server_conn)
+        {
+            client3_server_conn->write_data(test_data, sizeof(test_data));
+        }
+        std::this_thread::sleep_for(std::chrono::milliseconds(3000));
+    }
+}
+
+
+
+
+
+
 int main(void)
 {
     tinynet::EventLoop event_loop;
@@ -77,9 +152,21 @@ int main(void)
     tcp_client.set_onmessage_cb(on_message_cb);
     tcp_client.set_disconnected_cb(disconnected_cb);
     tcp_client.connect("127.0.0.1", 14000);
-
-
     std::thread t1 = std::thread(client_thread);
+
+    tinynet::TcpClient tcp_client2(&event_loop, "echo_client2");
+    tcp_client2.set_newconn_cb(new_conn_cb2);
+    tcp_client2.set_onmessage_cb(on_message_cb2);
+    tcp_client2.set_disconnected_cb(disconnected_cb2);
+    tcp_client2.connect("127.0.0.1", 14000);
+    std::thread t2 = std::thread(client2_thread);
+
+    tinynet::TcpClient tcp_client3(&event_loop, "echo_client3");
+    tcp_client3.set_newconn_cb(new_conn_cb3);
+    tcp_client3.set_onmessage_cb(on_message_cb3);
+    tcp_client3.set_disconnected_cb(disconnected_cb3);
+    tcp_client3.connect("127.0.0.1", 14001);
+    std::thread t3 = std::thread(client3_thread);
 
     event_loop.loop();
 
