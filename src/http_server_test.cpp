@@ -28,7 +28,7 @@ void on_request(const tinynet::HttpRequest &request, tinynet::HttpResponse &resp
 int main(void)
 {
     tinynet::EventLoop event_loop;
-    tinynet::HttpServer server(&event_loop, "192.168.56.103", 8070, "http_test_server");
+    tinynet::HttpServer server(&event_loop, "172.29.51.204", 8070, "http_test_server");
     server.set_onrequest_cb(on_request);
     server.start();
     event_loop.loop();

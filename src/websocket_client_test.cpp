@@ -71,19 +71,19 @@ int main(void)
     client.set_newconn_cb(new_conn_cb);
     client.set_onmessage_cb(on_message_cb);
     client.set_disconnected_cb(disconnected_cb);
-    client.connect("192.168.56.103", 8070);
+    client.connect("127.0.0.1", 8070);
 
     tinynet::WsClient client2(&event_loop, "ws_client2");
     client2.set_newconn_cb(new_conn_cb);
     client2.set_onmessage_cb(on_message_cb);
     client2.set_disconnected_cb(disconnected_cb);
-    client2.connect("192.168.56.103", 8070);
+    client2.connect("127.0.0.1", 8070);
 
     tinynet::WsClient client3(&event_loop, "ws_client3");
     client3.set_newconn_cb(new_conn_cb);
     client3.set_onmessage_cb(on_message_cb);
     client3.set_disconnected_cb(disconnected_cb);
-    client3.connect("192.168.56.103", 8070);
+    client3.connect("127.0.0.1", 8070);
 
     event_loop.loop();
     return 0;

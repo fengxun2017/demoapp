@@ -34,7 +34,7 @@ void on_message_cb(tinynet::WsConnPtr &ws_conn, const uint8_t *data, size_t size
 int main(void)
 {
     tinynet::EventLoop event_loop;
-    tinynet::WebSocketServer server(&event_loop, "192.168.56.103", 8070, "demo_websocket_server");
+    tinynet::WebSocketServer server(&event_loop, "127.0.0.1", 8070, "demo_websocket_server");
     server.set_newconn_cb(new_conn_cb);
     server.set_onmessage_cb(on_message_cb);
     server.set_disconnected_cb(disconnected_cb);
