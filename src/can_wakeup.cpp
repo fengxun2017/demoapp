@@ -23,25 +23,32 @@ bool check_wakeup(void)
 
 void wakeup_thread(void)
 {
-    tinynet::Can can("can0");
+    enable_wakeup();
 
-    uint8_t wakeup_msg[8] = {};
-    uint32_t wakeup_canid = 0x508;
-    while(1)
+    tinynet::Can can("can_ccc_001");
+    if (true == can.bind("can_ccc_001"))
     {
-        if (check_wakeup())
+        uint8_t wakeup_msg[8] = {0x08, 0x40, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
+        uint32_t wakeup_canid = 0x508;
+        while(1)
         {
-            can.write_data(wakeup_canid, wakeup_msg, sizeof(wakeup_msg));
+            if (check_wakeup())
+            {
+                LOG(DEBUG) << "send wakeup msg" << std::endl;
+                can.write_data(wakeup_canid, wakeup_msg, sizeof(wakeup_msg));
+            }
+
+            std::this_thread::sleep_for(std::chrono::milliseconds(200));
         }
-
-        std::this_thread::sleep_for(std::chrono::milliseconds(200));
     }
-
+    else {
+        LOG(ERROR) << "can bind failed" << std::endl;
+    }
 }
 
 int main(void)
 {
-    
+    LOG(DEBUG) << "start can_wakeup" << std::endl;
     std::thread t1 = std::thread(wakeup_thread);
     
     t1.join();
