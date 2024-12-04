@@ -59,6 +59,7 @@ int main(void)
     tcp_server.set_newconn_cb(new_conn_cb);
     tcp_server.set_onmessage_cb(on_message_cb);
     tcp_server.set_disconnected_cb(disconnected_cb);
+    tcp_server.set_worker_thread_num(2);
     tcp_server.start();
 
     tinynet::TcpServer tcp_server2(&event_loop, "127.0.0.1", 14001, "echo_server2");
