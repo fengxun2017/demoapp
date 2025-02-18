@@ -31,6 +31,7 @@ endfunction()
 set(CMAKE_C_COMPILER gcc)
 set(CMAKE_CXX_COMPILER g++)
 set(CMAKE_CXX_FLAGS "-O2 -g -std=c++17")
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 message(STATUS "in myapp show CMAKE_SOURCE_DIR: ${CMAKE_SOURCE_DIR}")
 message(STATUS "in myapp show CMAKE_CURRENT_BINARY_DIR: ${CMAKE_CURRENT_BINARY_DIR}")
